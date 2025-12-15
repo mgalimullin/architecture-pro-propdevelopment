@@ -1,0 +1,5 @@
+[
+  "list secrets (system:apiserver)",
+  "watch secrets (system:apiserver)",
+  "403 Forbidden: system:kube-scheduler get configmaps kube-system"
+]
