@@ -1,0 +1,21 @@
+apiVersion: templates.gatekeeper.sh/v1
+kind: ConstraintTemplate
+metadata:
+  name: k8srunasnonroot
+spec:
+  crd:
+    spec:
+      names:
+        kind: K8sRunAsNonRoot
+  targets:
+    - target: admission.k8s.gatekeeper.sh
+      rego: |
+        package k8srunasnonroot
+        violation[{"msg": "Containers must runAsNonRoot and use readOnlyRootFilesystem"}] {
+          container := input.review.object.spec.containers[_]
+          not container.securityContext.runAsNonRoot
+        }
+        violation[{"msg": "readOnlyRootFilesystem must be true"}] {
+          container := input.review.object.spec.containers[_]
+          not container.securityContext.readOnlyRootFilesystem
+        }
